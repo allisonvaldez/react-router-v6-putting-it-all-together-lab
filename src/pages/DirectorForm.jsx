@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom"
 import { useOutletContext } from "react-router-dom"
 import { useState } from "react"
 
-// Create a funciton for DirectorForm
+// Create a function for DirectorForm
 function DirectorForm() {
   // Declare initial states for name, directors, and bio
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [directors, setDirectors] = useOutletContext;
-
+  // Call useOutletContext to access directors state from parent
+  const [directors, setDirectors] = useOutletContext();
 
   // Redirect via useNavigate upon successful form submission
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ function DirectorForm() {
         return r.json()
       })
       .then(data => {
-        // Add new director to the shared state for immediate rendergin
+        // Add new director to the shared state for immediate rendering
         setDirectors([...directors, data])
         // Redirect to new director page
         navigate(`/directors/${data.id}`)

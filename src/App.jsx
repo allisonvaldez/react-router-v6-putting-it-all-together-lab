@@ -1,4 +1,4 @@
-// Import necessary components, route and routes, and browserroutes
+// Import BrowserRouter, Routes, and Route to set up client-side routing
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
 import About from "./pages/About"
@@ -7,35 +7,38 @@ import DirectorList from "./pages/DirectorList"
 import DirectorForm from "./pages/DirectorForm"
 import DirectorCard from "./pages/DirectorCard"
 import MovieForm from "./pages/MovieForm"
-import MoivieCard from "./pages/MovieCard"
+import MovieCard from "./pages/MovieCard"
 import ErrorPage from "./pages/ErrorPage"
 
 // Declare a main app component
 const App = () => {
     return (
-        // BrowserRouter will allow for client-side routing for the app
+        // BrowserRouter enables client-side routing throughout the app
         <BrowserRouter>
             <Routes>
-                {/* Put Home and About as top level */}
-                <Route path="/" element={<Home />}>
-                    <Route path="/about" element={<About />}>
-                        {/* Place DirectorContainer here at is it the parent of all director pages */}
-                        <Route path="/directors" element={<DirectorContainer />}>
-                            {/* Next is New Director List */}
-                            <Route index element={<DirectorList />} />
-                            {/* Next is New Director Form */}
-                            <Route path="new" element={<DirectorForm />} />
-                            {/* Director page with nested movie routes */}
-                            <Route path=":id" element={<DirectorCard />}>
-                                <Route path="movies/new" element={<MovieForm />} />
-                                <Route path="movies/:movieId" element={<MovieCard />} />
-                            </Route>
-                        </Route>
-                        {/* Handle invalid routes */}
-                        <Route path="*" element={<ErrorPage />} />
-                    </Routes>
-                </BrowserRouter >
-                )
+                {/* Home and About are top-level routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+
+                {/* DirectorContainer is the parent route for all director pages */}
+                <Route path="/directors" element={<DirectorContainer />}>
+                    {/* DirectorList renders by default at /directors */}
+                    <Route index element={<DirectorList />} />
+                    {/* New director form at /directors/new */}
+                    <Route path="new" element={<DirectorForm />} />
+                    {/* Individual director page with nested movie routes */}
+                    <Route path=":id" element={<DirectorCard />}>
+                        <Route path="movies/new" element={<MovieForm />} />
+                        <Route path="movies/:movieId" element={<MovieCard />} />
+                    </Route>
+                </Route>
+
+                {/* Wildcard catches any invalid routes */}
+                <Route path="*" element={<ErrorPage />} />
+            </Routes>
+        </BrowserRouter>
+    )
 }
-                // Make it globally available
-                export default App
+
+// Make it globally available
+export default App

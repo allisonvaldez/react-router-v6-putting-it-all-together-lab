@@ -1,6 +1,6 @@
-// Import useParams and useOutletContex
+// Import useParams and useOutletContext
 import { useParams } from "react-router-dom"
-import { outOutletContext } from "react-router-dom"
+import { useOutletContext } from "react-router-dom"
 
 // Create a function for MovieCard
 function MovieCard() {

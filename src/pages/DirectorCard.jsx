@@ -1,5 +1,4 @@
-// Import link, navigation, outlet, use params, and useOutletContext
-import { use } from "react";
+// Import Link, Outlet, useParams, and useOutletContext for routing and context
 import { Link, Outlet, useParams } from "react-router-dom"
 import { useOutletContext } from "react-router-dom"
 
@@ -7,10 +6,10 @@ import { useOutletContext } from "react-router-dom"
 function DirectorCard() {
     // Gather director id from URL
     const { id } = useParams();
-    // Set initial values from the parents for directors and setDirectors
+    // Set initial values from the parent for directors and setDirectors
     const [directors, setDirectors] = useOutletContext();
-    // Find proper directors from id
-    const directors = directors.find(d => String(d.id) === String(id))
+    // Find the matching director by id — named director not directors to avoid conflict
+    const director = directors.find(d => String(d.id) === String(id))
 
     // Perform error handling if director id doesnt match anything
     if (!director) {
