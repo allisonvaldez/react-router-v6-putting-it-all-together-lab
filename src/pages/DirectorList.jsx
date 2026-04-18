@@ -1,10 +1,15 @@
+// Import link component and useOutletContext
+import { Link } from "react-router-dom"
+import { useOutletContext } from "react-router-dom"
 
+// Define a variable DirectorsList from a function 
 const DirectorList = () => {
-    // Replace me
-    const directors = []
+    // from getting directors from their parents in the container
+    const [directors] = useOutletContext();
 
+    // Make sure that the link navigates to each director's page
     const displayDirectors = directors.map(d => (
-        <li><a>{d.name}</a></li>
+        <li key={d.id}><Link to={`${d.id}`}>{d.name}</Link></li>
     ))
 
     return (
@@ -14,4 +19,5 @@ const DirectorList = () => {
     );
 }
 
+// Make it globally available
 export default DirectorList;

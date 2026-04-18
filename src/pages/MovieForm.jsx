@@ -1,16 +1,28 @@
+// Import useState, useParams, useNavigate, useOutletContext, and uuidv4
 import { useState } from "react"
 import { v4 as uuidv4 } from 'uuid'
+import { useParams, useNavigate } from "react-router-dom"
+import { useOutletContext } from "react-router-dom"
 
+// Create MovieForm function
 function MovieForm() {
+  // Set initial states
   const [title, setTitle] = useState("")
   const [time, setTime] = useState("")
   const [genres, setGenres] = useState("")
 
-  // Replace me
-  const director = null
-  
-  if (!director) { return <h2>Director not found.</h2>}
+  // Get director id from URL
+  const { id } = useParams()
+  const navigate = useNavigate()
+  // Pull directors and setDirectors from context
+  const [directors, setDirectors] = useOutletContext()
 
+  // Find the matching director to attach the new movie to
+  const director = directors.find(d => String(d.id) === String(id))
+
+  if (!director) { return <h2>Director not found.</h2> }
+
+  // Prevent default
   const handleSubmit = (e) => {
     e.preventDefault()
     const newMovie = {
@@ -24,18 +36,20 @@ function MovieForm() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({movies: [...director.movies, newMovie]})
+      body: JSON.stringify({ movies: [...director.movies, newMovie] })
     })
-    .then(r => {
-      if (!r.ok) { throw new Error("failed to add movie") }
-      return r.json()
-    })
-    .then(data => {
-      console.log(data)
-      // handle context/state changes
-      // navigate to newly created movie page
-    })
-    .catch(console.log)
+      .then(r => {
+        if (!r.ok) { throw new Error("failed to add movie") }
+        return r.json()
+      })
+      .then(data => {
+        console.log(data)
+        // Replace the updated director in shared state
+        setDirectors(directors.map(d => d.id === data.id ? data : d))
+        // Redirect to the newly created movie's detail page
+        navigate(`/directors/${id}/movies/${newMovie.id}`)
+      })
+      .catch(console.log)
   }
 
   return (
@@ -69,5 +83,6 @@ function MovieForm() {
   )
 }
 
+// Make it globally available
 export default MovieForm
 
